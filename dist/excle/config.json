@@ -1,0 +1,89 @@
+{
+    "data1": {
+        "file_name":"不区分国家.xlsx",
+        "outName":"不区分国家.xlsx",
+        "sheet_name":"Sheet1" ,
+        "sku_col_name":"attribute", 
+        "Tracking_Company":"Tracking Company",
+        "订单编号表头":"OrderID",
+        "写入价格表头":"Cost",
+        "数量表头":"Quantity"
+    },
+    "price1": {  
+        "file_name":"价格匹配表_不区分国家.xlsx",
+        "sheet_name_price1":"价格匹配表",
+        "sheet_name_price2":"多品价格",
+        "sheet_name_price3_width":"配件表",
+        "sheet_name_overseas":"海外仓sku",
+        "sku_col_name":"客户sku",
+        "总价_1个":"总价（1个）",
+        "多1个的价格":"多1个的价格"
+    },
+    "data2": {
+        "file_name":"区分国家.xlsx" ,
+        "outName":"区分国家.xlsx",
+        "sheet_name":"Sheet1",
+        "sku_col_name":"*Attributes (Type/Size)",
+        "数量_表头":"*Quantity",
+        "国家_表头":"*Country Code",
+        "写入价格_表头":"Cost",
+        "订单编号_表头":"Order Name"
+    },
+    "price2": {
+        "file_name":"价格匹配表_区分国家.xlsx" ,
+        "sheet_name_price1":"价格匹配表",
+        "sheet_name_price2":"多品价格",
+        "sheet_name_price3_width":"配件价格",
+        "sku_col_name":"客户sku",  
+        "country_col_name":"国家",
+        "总价_1个":"总价格",
+        "第2件运费":"第2件运费",
+        "产品价格":"产品价格",
+        "配件SKU":"sku"
+    },
+    "other":{
+        "日志文件":"log.txt",
+        "a1_equid_b1":{
+            "AGL-1P":"AGL"
+        },
+        "a2_equid_b2":{
+            "LBBR-S1":"LBBR-B1",
+            "LBBR-S2":"LBBR-B2",
+            "LBBR-S3":"LBBR-B3",
+            "LBBR-S4":"LBBR-B4",
+            "LBBR-S5":"LBBR-B5",
+            "LBBR-S6":"LBBR-B6",
+            "LBBR-S7":"LBBR-B7",
+            "LBBR-S8":"LBBR-B8",
+            "WP-PN-RG-2":"WP-PN-G2",
+            "WP-PN-RG-3":"WP-PN-G3",
+            "WP-PN-RG-4":"WP-PN-G4",
+            "WP-PN-RG-5":"WP-PN-G5",
+            "WP-PN-RG-6":"WP-PN-G6",
+            "WP-PN-RG-7":"WP-PN-G7",
+            "GHCB-S":"GHCB-G",
+            "GHCB-R":"GHCB-G",
+            "Keychain":"UMK-1P",
+            "UMK":"UMK-1P",
+            "UGCG/12oz":"UGCF/12oz",
+            "UGCG/16oz":"UGCF/16oz",
+            "MugTum/Black":"MugTum/MilitaryGreen",
+            "MMugTum/Navy":"MugTum/MilitaryGreen",
+            "URCO/7.2x7.2cm-cutout":"URCOS/7.2x7.2cm-cutout",
+            "UHCO/7.5x7cm":"UHCOS/7.5x7cm",
+            "UOLNPD-Gold/3.4X2.4CM":"UOLNPD-Silver/3.4X2.4CM",
+            "PUTKC":"PUFKC",
+            "COWC/Silver":"COWC/Gold",
+            "THW":"THW/Gold",
+            "THW/Gold-PinkBox":"THW/Gold-BlackBox",
+            "THW/2Oval":"THW/2Oval-Gold",
+            "THW/2Oval-PinkBox":"THW/2Oval-BlackBox",
+            "THW/3Oval":"THW/Gold-3Oval",
+            "MCON/Wing":"MCON/Paw",
+            "WEMW/A":"EMW/C",
+            "WEMW/A+C":"WEMW/C",
+            "AGL-1P":"AGL",
+            "CPTP-Light Brown":"CPTP-Black"
+        }
+    }
+}
