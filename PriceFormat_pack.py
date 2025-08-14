@@ -29,10 +29,8 @@ def pack_script(script_name, output_dir="dist", one_file=True, no_console=False,
     if additional_data:
         for src, dest in additional_data:
             command.extend(["--add-data", f"{src};{dest}"])
-    
     # 添加要打包的脚本
     command.append(script_name)
-
     # 执行 PyInstaller 命令
     try:
         print(f"正在打包 {script_name}...")
