@@ -5,7 +5,7 @@ a = Analysis(
     ['PriceFormat.py'],
     pathex=[],
     binaries=[],
-    datas=[('D:\\ldd-desk\\myhtml\\python\\excle\\**', 'excle/')],
+    datas=[('D:\\ldd-desk\\python\\py_price\\excle\\**', 'excle/')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

@@ -18,7 +18,7 @@ config = {}
 config_path = os.path.join(script_dir,"excle","config.json")
 with open(config_path, 'r', encoding='utf-8') as file:
     config = json.load(file)
-    print(config)
+    # print(config)
 # 数据表中订单列的名称-不区分国家
 ex_order_id = config['data1']['订单编号表头'] #订单ID
 ex_one_more_price = config['price1']['多1个的价格']#多个品类的价格
@@ -85,6 +85,11 @@ price2_2= get_excel_file(ex_price2_filename,config['price2']['sheet_name_price2'
 price2_3= get_excel_file(ex_price2_filename,config['price2']['sheet_name_price3_width'])
 data1 = get_excel_file(ex_data1_filename,config['data1']['sheet_name'])
 data2 = get_excel_file(ex_data2_filename,config['data2']['sheet_name'])
+#checkExcleData(data1)
+def checkExcleData(data):
+    print(data.columns.tolist(),'表头1')
+    print(data.head())
+# 格式化价格
 # check return data =========================================
 def check_data(lst):
     if not isinstance(lst, list):
@@ -94,7 +99,6 @@ def check_data(lst):
     return lst[0]
 # 运行 def========== data2相似sku转换
 def sku_a_equid_b1():
-    print(data1.columns.tolist(),'表头1')
     sku_col_name = ex_sku
     same_skulist = config['other']['a1_equid_b1']
     for key, value in same_skulist.items():
@@ -336,6 +340,18 @@ def start_fill_price_data1():
     write_log("开始填充价格")
     # 格式化数据
     data_old = get_excel_file(file_path,config['data1']['sheet_name'])
+    # 检测数据是否为空
+    if data_old is None:
+        print("===>不区分国家 文件不存在/名称不对")
+        return
+    # 检测表头是否为空
+    header_list = data_old.columns.tolist()
+    config_header_list = [ex_order_id,ex_sku,ex_qty,ex_overseas_attribute]
+    flag = all(item in header_list for item in config_header_list)
+    if not flag:
+        print(f"数据表头=> {header_list}")
+        print(f"1表头不匹配=> {config_header_list}")
+        return
     data1 = sku_a_equid_b1()
     write_log("开始填充不区分国家的价格")
     # 1.根据sku填充价格
@@ -515,7 +531,6 @@ def fill_price_by_duplicated_id_data2():
 # data2相似sku转换 先格式化数据用来处理sku中视为相同的清款
 def sku_a_equid_b2():
     same_skulist = config['other']['a2_equid_b2']
-    print(data2.columns.tolist(),'表头2')
     for key, value in same_skulist.items():
         # print(key, value)
         data2[ex_data2_sku] = data2[ex_data2_sku].replace(key,value)
@@ -523,6 +538,18 @@ def sku_a_equid_b2():
 def start_fill_price_data2():
     file_path = os.path.join(script_dir, "excle", ex_data2_filename)
     data_old = get_excel_file(file_path,config['data2']['sheet_name'])
+    # 检测数据是否为空
+    if data_old is None:
+        print("===>区分国家 文件不存在/名称不对")
+        return
+    # 检测表头是否为空
+    header_list = data_old.columns.tolist()
+    config_header_list = [ex_data2_order_id,ex_data2_sku,ex_data2_qty,ex_data2_country]
+    flag = all(item in header_list for item in config_header_list)
+    if not flag:
+        print(f"数据表头=> {header_list}")
+        print(f"2表头不匹配=> {config_header_list}")
+        return
     # 格式化数据
     data2 = sku_a_equid_b2()
     # print(data2.iloc[229:234][ex_data2_sku])
