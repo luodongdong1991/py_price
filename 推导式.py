@@ -11,3 +11,5 @@ print(result)  # 输出: True
 sublist = [2, 6]
 result = contains_sublist(main_list, sublist)
 print(result) 
+k = all(item in [10, 20, 30] for item in [20])
+print(k)
