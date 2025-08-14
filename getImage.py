@@ -23,7 +23,7 @@ def download_images(url, save_folder='images'):
 
     # 解析网页内容
     soup = BeautifulSoup(response.text, 'html.parser')
-
+    
     # 查找所有图片标签
     img_tags = soup.find_all('img')
 
@@ -44,7 +44,7 @@ def download_images(url, save_folder='images'):
             # 获取文件扩展名
             ext = os.path.splitext(img_url)[1]
             if not ext or len(ext) > 5:
-                ext = '.jpg'  # 默认扩展名
+                ext = '.png'  # 默认扩展名
 
             # 保存图片
             file_path = os.path.join(save_folder, f'image_{img_url.split("/")[-1]}{ext}')
