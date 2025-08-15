@@ -419,7 +419,7 @@ def fill_price_by_sku_data2():
         country = row[ex_data2_country]
         row_index = get_row_index_by_sku(sku, 3)
         if row_index is None:
-            data2.loc[[index], ex_data2_price] = price
+            data2.loc[[index], ex_data2_price] = 0
             write_log(f"填充{sku}的价格为{0}_error")
             continue
         price = 0
