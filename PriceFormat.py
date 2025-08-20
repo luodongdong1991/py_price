@@ -111,26 +111,24 @@ def get_row_index_by_sku(sku,type,country="US"):
     # 1 不区分国家 多品价格
     if type == 1:
         sku_col_name = config['price1']['sku_col_name']
-        row_index = price1_2.index[price1_2[sku_col_name] == sku].tolist()
+        row_index = price1_2.index[price1_2[sku_col_name].str.strip().str.lower() == sku.lower().strip()].tolist()
         return check_data(row_index)
     # 2 不区分国家 海外
-    
     if type == 2:
         sku_col_name = config['price1']['sku_col_name']
-        row_index = price1_4.index[price1_4[sku_col_name] == sku].tolist()  
+        row_index = price1_4.index[price1_4[sku_col_name].str.strip().str.lower() == sku.lower().strip()].tolist()  
         return check_data(row_index)
     #区分国家 单个
     if type == 3:
         sku_col_name = config['price2']['sku_col_name']
-        mask = price2_1[sku_col_name] == sku 
+        mask = price2_1[sku_col_name].str.strip().str.lower() == sku.lower().strip()
         row_index = price2_1.index[mask].tolist()
-        #print(row_index,'==')
         return check_data(row_index)
     #区分国家 多个
     if type == 4:
         sku_col_name = config['price2']['sku_col_name']
         if country in ['AU','CA','DE','FR','GB']:
-            mask = price2_2[sku_col_name] == sku
+            mask = price2_2[sku_col_name].str.strip().str.lower() == sku.lower().strip()
             row_index = price2_2.index[mask].tolist()
             if check_data(row_index) is not None:
                 index = check_data(row_index)
@@ -141,18 +139,20 @@ def get_row_index_by_sku(sku,type,country="US"):
             else:
                 return None
         elif country in ["US"]:
-            mask = price2_2[sku_col_name] == sku
+            mask = price2_2[sku_col_name].str.strip().str.lower() == sku.lower().strip()
             row_index = price2_2.index[mask].tolist()
             if check_data(row_index) is not None:
                 index = check_data(row_index)
                 end_index = index + 9
                 subset = price2_2.iloc[index:end_index]
                 filtered_data = subset[subset[ex_price2_country] == "US Main"]
+                if len(filtered_data) == 0:
+                    filtered_data = subset[subset[ex_price2_country] == "US"]
                 return check_data(filtered_data.index.tolist())
             else:
                 return None
         elif country in ["IE","FI","ES"]:
-            mask = price2_2[sku_col_name] == sku
+            mask = price2_2[sku_col_name].str.strip().str.lower() == sku.lower().strip()
             row_index = price2_2.index[mask].tolist()
             if check_data(row_index) is not None:
                 index = check_data(row_index)
