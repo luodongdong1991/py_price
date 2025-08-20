@@ -40,7 +40,9 @@ def format_price():
 def get_excel_file(file_name,sheet_name,keep_default_na=False,dtype=str):
     try:
         file_path = os.path.join(script_dir, "excle", file_name)
-        return pd.read_excel(file_path, sheet_name=sheet_name, keep_default_na=keep_default_na, dtype=dtype)
+        excle_data = pd.read_excel(file_path, sheet_name=sheet_name, keep_default_na=keep_default_na, dtype=dtype)
+        # excle_data = excle_data.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+        return excle_data
     except Exception as e:
         print(f"读取表格失败{file_path},{e}")
         write_log(f"读取表格失败{file_path},{e}")
