@@ -1,6 +1,6 @@
 excle/
 dist/
-build/
+build/**
 lib/
 *.xlsx
 *.xls
