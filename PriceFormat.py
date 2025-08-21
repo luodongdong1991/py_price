@@ -388,6 +388,7 @@ ex_price2_price = config['price2']['总价_1个']
 ex_price2_shippingfee = config['price2']['第2件运费'] 
 ex_price2_goodsfee = config['price2']['产品价格'] 
 ex_price2_3_sku = config['price2']['配件SKU']
+ex_price2_price2 = config['price2']['不同产品折扣价']
 # 获取配件-行数
 def get_equipped_row_index(sku):
     mask = price2_3[config['price2']['sku_col_name']] == sku
@@ -511,6 +512,7 @@ def fill_price_by_duplicated_id_data2():
             sku = row[ex_data2_sku]
             qty = row[ex_data2_qty] # 获取数量
             country = row[ex_data2_country]
+            order_id = row[ex_data2_order_id]
             row_index = get_row_index_by_sku(row[ex_data2_sku],4,country)
             if row_index is None:
                 data2.loc[[index], ex_data2_price] = 0
@@ -520,13 +522,28 @@ def fill_price_by_duplicated_id_data2():
             shipping_fee = price2_2.loc[row_index,ex_price2_shippingfee]
             goods_fee = price2_2.loc[row_index,ex_price2_goodsfee]
             one_more_price = float(shipping_fee) + float(goods_fee)
-            # 检查是不是配件 配件单发价格不一样的
-            # 数量大于一   
             qty = float(qty) 
-            if qty> 1:
-                data2.loc[[index], ex_data2_price] = float(price) + (qty - 1) * float(one_more_price)
+            # 其他价格
+            other_price = price2_2.loc[row_index,ex_price2_price2]
+            # 如果其他价格不为空
+            if other_price:
+                occurrences = data2[data2[ex_data2_order_id] == order_id].index.tolist()
+                position = occurrences.index(index) or 0
+                if position > 0:
+                    data2.loc[[index], ex_data2_price] = float(other_price) * qty
+                else:
+                    # 数量大于一   
+                    if qty> 1:
+                        data2.loc[[index], ex_data2_price] = float(price) + (qty - 1) * float(one_more_price)
+                    else:
+                        data2.loc[[index], ex_data2_price] = price
+                #print(f"list_index:{occurrences},{index},{position},{other_price}")
             else:
-                data2.loc[[index], ex_data2_price] = price
+                # 数量大于一   
+                if qty> 1:
+                    data2.loc[[index], ex_data2_price] = float(price) + (qty - 1) * float(one_more_price)
+                else:
+                    data2.loc[[index], ex_data2_price] = price
             # 设置配件价格
             fill_price_by_equipped_data2(index,row)
  
