@@ -1,10 +1,10 @@
 import pandas as pd
 import datetime
 import os
-import json
-import sys
+from openpyxl import load_workbook
 # 获取当前工作目录
-work_dir = os.path.dirname(__file__)
+# work_dir = os.path.dirname(__file__)
+work_dir = r"D:\实在RPA\抠图排查"
 # 定义表格名称
 sheet_name = "Recovered_Sheet1"
 # 运行时间
@@ -18,21 +18,24 @@ ex_tran_no = "交易编号"
 ex_url = "定制图片"
 ex_zh_name = "商品中文名称"
 ex_sort_no = "序号"
-if getattr(sys, 'frozen', False):
-    work_dir = os.path.dirname(sys.executable)
+# if getattr(sys, 'frozen', False):
+#     work_dir = os.path.dirname(sys.executable)
 def get_excel_file(file_name,sheet_name,keep_default_na=False,dtype=str):
     try:
         file_path = os.path.join(work_dir, file_name)
-        return pd.read_excel(file_path, sheet_name=sheet_name, keep_default_na=keep_default_na, dtype=dtype)
+        workbook = load_workbook(filename=file_path)
+        sheet_names = workbook.sheetnames
+        print(f"==表{sheet_names},共有{len(sheet_names)}个表格,{file_path}")
+        return pd.read_excel(file_path, sheet_name=sheet_names[0], keep_default_na=keep_default_na, dtype=dtype)
     except Exception as e:
-        print(f"读取表格失败{file_path},{e}")
+        print(f"读取表格失败{file_name},{e}")
         return None
-excle = get_excel_file("订单列表.xlsx", sheet_name)
 
-def format_excle(excle):
+def main():
+    excle = get_excel_file("订单列表.xlsx", sheet_name)
     print("开始格式化数据...")
     if excle is None:
-        print("读取数据失败")
+        print("读取数据失败==>无法格式化数据")
         return None
     excle.columns = [i.strip() for i in excle.columns]
     # 空 交易编号 处理
@@ -67,13 +70,21 @@ def format_excle(excle):
                         excle.loc[[index], ex_url] = item
                         excle.loc[[index], ex_sort_no] = current_time + "_" + str(flag)
     # save
-    print(excle.columns.tolist(),"表头")
-    new_header = ['','交易编号', '图片链接', '商品中文名称',ex_sort_no]
-    excle.columns = new_header
+    print(excle.columns.tolist(),"原始表头")
+    old_header = excle.columns.tolist()
+    for i in range(len(old_header)):
+        if  old_header[i] == "定制图片":
+            old_header[i] = "图片链接" 
+    excle.columns = old_header
+    print(excle.columns.tolist(),"新")
     # 选取特定列
     selected_columns = excle[['交易编号', '图片链接',ex_sort_no]]
     print("开始保存数据...")
     name = f"Queue.xlsx"
     file_path = os.path.join(work_dir,name)
-    selected_columns.to_excel(file_path,sheet_name=sheet_name,index=False,engine='openpyxl')
-excle = format_excle(excle)
+    selected_columns.to_excel(file_path,sheet_name="Sheet1",index=False,engine='openpyxl')
+    print("保存成功")
+    return True
+#生成队表格式
+if __name__ == "__main__":
+    main()
