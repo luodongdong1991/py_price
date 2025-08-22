@@ -33,7 +33,7 @@ def get_current_time():
     return datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 def get_excel_file(file_name,keep_default_na=False,dtype=str):
     try:
-        file_path = os.path.join(work_dir,'images', file_name)
+        file_path = os.path.join(work_dir, file_name)
         workbook = load_workbook(filename=file_path)
         sheet_names = workbook.sheetnames
         return pd.read_excel(file_path, sheet_name=sheet_names[0], keep_default_na=keep_default_na, dtype=dtype)
