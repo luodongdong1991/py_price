@@ -8,9 +8,11 @@ from concurrent.futures import ThreadPoolExecutor
 work_dir = os.path.dirname(__file__)
 if getattr(sys, 'frozen', False):
     work_dir = os.path.dirname(sys.executable)
-
+def get_current_time():
+    return datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 # 下载图片
 def download_image(url, index):
+    tt = get_current_time()
     if not url:
         print("URL不能为空")
         return
@@ -25,12 +27,9 @@ def download_image(url, index):
     if response.status_code == 200:
         with open(save_path, "wb") as f:
             f.write(response.content)
-        print(f"第{index + 1}张图片已成功下载到 {save_path}")
+        print(f"[{tt}]:第{index + 1}张图片已成功下载到 {save_path}")
     else:
-        print(f"第{index + 1}张图片下载失败，状态码：{response.status_code}, URL:{url}")
-
-def get_current_time():
-    return datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        print(f"{tt}]:第{index + 1}张图片下载失败，状态码：{response.status_code}, URL:{url}")
 
 def get_excel_file(file_name, keep_default_na=False, dtype=str):
     try:
@@ -49,12 +48,12 @@ def main():
         print("读取数据失败==>无法下载图片")
         return None
     excle.columns = [i.strip() for i in excle.columns]
-    max_workers = 20
+    max_workers = 100
     # 使用线程池
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for index, row in excle.iterrows():
-            url = row['图片链接']
             try:
+                url = row['图片链接'].strip()
                 executor.submit(download_image, url, index)
             except Exception as e:
                 print(f"第{index + 1}张图片下载失败,{url},{e}")
