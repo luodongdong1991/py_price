@@ -50,7 +50,7 @@ def main():
             download_image(url)
             print(f"第{index + 1}下载图片完成...")
         except Exception as e:
-            print(f"下载图片失败,{url},{e}")
+            print(f"第{index + 1}下载图片失败,{url},{e}")
 #生成队表格式
 if __name__ == "__main__":
     main()
