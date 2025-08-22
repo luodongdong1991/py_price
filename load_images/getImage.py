@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 work_dir = os.path.dirname(__file__)
 if getattr(sys, 'frozen', False):
     work_dir = os.path.dirname(sys.executable)
+# 下载图片
 def download_image(url):
     if not url:
         print("URL不能为空")
@@ -24,11 +25,7 @@ def download_image(url):
             f.write(response.content)
         print(f"图片已成功下载到 {save_path}")
     else:
-        print("请求失败，状态码：", response.status_code)
-
-# 示例使用
-# image_url = "https://cdn.customily.com/ExportFile/Benson/dd45ee2d-7876-41d8-a289-1e003b87593c.png"  # 替换为实际的图片URL
-# download_image(image_url)
+        print(f"请求失败，状态码：{response.status_code},url:{url}")
 def get_current_time():
     return datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 def get_excel_file(file_name,keep_default_na=False,dtype=str):
@@ -49,8 +46,11 @@ def main():
     excle.columns = [i.strip() for i in excle.columns]
     for index, row in excle.iterrows():
         url = row['图片链接']
-        download_image(url)
-    print("下载图片完成...")
+        try:
+            download_image(url)
+            print(f"第{index + 1}下载图片完成...")
+        except Exception as e:
+            print(f"下载图片失败,{url},{e}")
 #生成队表格式
 if __name__ == "__main__":
     main()
